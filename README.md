@@ -17,6 +17,7 @@ This code is based on [this article](https://medium.com/xeneta/fuzzy-search-with
       - [String field](#string-field)
       - [Object field](#object-field)
     - [Middlewares](#middlewares)
+    - [Index options](#index-options)
 - [Query parameters](#query-parameters)
   - [Instance method](#instance-method)
   - [Query helper](#query-helper)
@@ -262,6 +263,26 @@ UserSchema.plugin(mongoose_fuzzy_searching, {
     preUpdateOne: async function {
       // do something before the object is updated (asynchronous)
     }
+  }
+});
+```
+
+#### Index options
+
+IndexOptions is an optionsl `Object` that can contain additional mongo index options. Some of the usage examples would be adding `default_language` or `language_override` configuration for the text index which is created behind the scenes.
+
+```javascript
+const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
+
+const QuoteSchema = new Schema({
+  quote: String,
+  idioma: String,
+});
+
+UserSchema.plugin(mongoose_fuzzy_searching, {
+  fields: ['quote'],
+  indexOptions: {
+    language_override: 'idioma'
   }
 });
 ```
