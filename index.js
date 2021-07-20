@@ -130,7 +130,11 @@ module.exports = function (schema, pluginOptions) {
     throw new Error('You must set at least one field for fuzzy search.');
   }
 
-  const { fields, middlewares } = pluginOptions;
+  const { 
+    fields, 
+    middlewares,
+    indexOptions = {}
+  } = pluginOptions;
 
   if (!Array.isArray(fields)) {
     throw new TypeError('Fields must be an array.');
@@ -140,7 +144,7 @@ module.exports = function (schema, pluginOptions) {
   validateMiddlewares(middlewares);
 
   const { indexes, weights } = createFields(schema, fields);
-  schema.index(indexes, { weights, name: 'fuzzy_text' });
+  schema.index(indexes, { weights, name: 'fuzzy_text', ...indexOptions });
 
   const hideElements = removeFuzzyElements(fields);
   const { toJSON, toObject } = setTransformers(hideElements)(schema);
